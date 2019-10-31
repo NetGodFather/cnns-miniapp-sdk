@@ -15,15 +15,21 @@ if (!$cnns_app['app_id'] || !$cnns_app['clientPrivateKey'] || !$cnns_app['public
     <script src="./javascript/jquery.min.js"></script>
     <script src="./javascript/cnns_miniapp.js"></script>
     <title>CNNS SDK TEST</title>
+    <style type="text/css">
+    	input{
+    		padding:5px;
+    		margin:5px;
+    	}
+    </style>
 </head>
 <body>
-<hr />
-<input type="button" value="登陆" id="login"/>
-<input type="button" value="支付" id="pay"/>
 <input type="button" value="获取app信息" id="appbtn" />
-<input type="button" value="创建订单" id="create-btn" />
 <input type="button" value="切换到横屏" id="setlandscape" />
 <input type="button" value="切换到竖屏" id="setportrait" />
+<hr />
+<input type="button" value="登录" id="login"/>
+<input type="button" value="创建订单" id="create-btn" />
+<input type="button" value="支付" id="pay"/>
 <pre style="padding:10px;" id="log_out"></pre>
 <script type="text/javascript">
 var appId = "<?php echo $cnns_app['app_id'];?>";
@@ -122,7 +128,7 @@ paybtn.addEventListener("click",function(){
 		payId:in_pay_id,
 		callback:function(sre){
 			if(typeof sre.code === 'undefined'){
-				log("订单确认成功:"+JSON.stringify(sre.data));
+				log("订单确认成功:"+JSON.stringify(sre));
 				log("服务端检测...");
 				$.post('./ajax.php?a=check_pay',{auth_token:auth_token,in_pay_id:in_pay_id},checkPay_callback);
 			}else{
@@ -134,10 +140,10 @@ paybtn.addEventListener("click",function(){
 function checkPay_callback(re){
 	re = JSON.parse(re);
 	if(re.code == '200'){
-		log("检测支付成功："+JSON.stringify(re.in_order));
+		log("检测到订单已经支付成功："+JSON.stringify(re.in_order));
 		in_pay_id = re.in_order.in_pay_id;
 	}else{
-		log("检测支付成功："+re.code+"("+ re.message +")");
+		log("检测到订单未支付成功："+re.code+"("+ re.message +")");
 	}
 }
 
