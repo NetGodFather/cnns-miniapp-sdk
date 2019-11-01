@@ -16,6 +16,9 @@ if (!$cnns_app['app_id'] || !$cnns_app['clientPrivateKey'] || !$cnns_app['public
     <script src="./javascript/cnns_miniapp.js"></script>
     <title>CNNS SDK TEST</title>
     <style type="text/css">
+    	body {
+    		background: url('./images/bg.jpeg') no-repeat fixed center; 
+    	}
     	input{
     		padding:5px;
     		margin:5px;
@@ -30,7 +33,7 @@ if (!$cnns_app['app_id'] || !$cnns_app['clientPrivateKey'] || !$cnns_app['public
 <input type="button" value="登录" id="login"/>
 <input type="button" value="创建订单" id="create-btn" />
 <input type="button" value="支付" id="pay"/>
-<pre style="padding:10px;" id="log_out"></pre>
+<pre style="padding:10px;background:#FFF;" id="log_out"></pre>
 <script type="text/javascript">
 var appId = "<?php echo $cnns_app['app_id'];?>";
 var auth_token = "";
