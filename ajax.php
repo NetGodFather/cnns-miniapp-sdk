@@ -19,7 +19,7 @@ switch ($action) {
 		try {
 			$re = $client->authToken($code);
 		} catch (CNNSClientException $e) {
-			echo json_encode(array('code'=>505,'message'=>'接口返回错误','data'=>array('method'=>$e->method,'error_code'=>$e->getCode(),'message'=>$e->getMessage())),JSON_UNESCAPED_UNICODE);
+			echo json_encode(array('code'=>'505','message'=>'接口返回错误','data'=>array('method'=>$e->method,'error_code'=>$e->getCode(),'message'=>$e->getMessage())),JSON_UNESCAPED_UNICODE);
 			exit();
 		}
 		$auth_token = $re['auth_token'];
@@ -28,10 +28,9 @@ switch ($action) {
 		try {
 			$user_info = $client->getUserInfo($open_id);
 		} catch (CNNSClientException $e) {
-			json_encode(array('code'=>505,'message'=>'接口返回错误','data'=>array('method'=>$e->method,'error_code'=>$e->getCode(),'message'=>$e->getMessage())),JSON_UNESCAPED_UNICODE);
+			echo json_encode(array('code'=>'505','message'=>'接口返回错误','data'=>array('method'=>$e->method,'error_code'=>$e->getCode(),'message'=>$e->getMessage())),JSON_UNESCAPED_UNICODE);
 			exit();
 		}
-		
 		echo json_encode(array('code'=>'200','user'=>$user_info,'auth_token'=>$auth_token,'open_id'=>$open_id),JSON_UNESCAPED_UNICODE);
 		exit();
 		break;
@@ -45,7 +44,8 @@ switch ($action) {
 		try {
 			$re = $client->createInOrder($open_id, 'in_'.rand(100000000,999999999), 'Test in_order('.date('Y-m-d H:i:s').')', 'cnns', rand(1,10)*0.1);
 		} catch (CNNSClientException $e) {
-			echo json_encode(array('code'=>505,'message'=>'接口返回错误','data'=>array('method'=>$e->method,'error_code'=>$e->getCode(),'message'=>$e->getMessage())),JSON_UNESCAPED_UNICODE);
+			echo json_encode(array('code'=>'505','message'=>'接口返回错误','data'=>array('method'=>$e->method,'error_code'=>$e->getCode(),'message'=>$e->getMessage())),JSON_UNESCAPED_UNICODE);
+			exit();
 		}
 		echo json_encode(array('code'=>'200','in_order'=>$re),JSON_UNESCAPED_UNICODE);
 		exit();
@@ -57,14 +57,14 @@ switch ($action) {
 		try {
 			$in_order = $client->getInOrderInfo(0,$in_pay_id);
 		} catch (CNNSClientException $e) {
-			echo json_encode(array('code'=>505,'message'=>'接口返回错误','data'=>array('method'=>$e->method,'error_code'=>$e->getCode(),'message'=>$e->getMessage())),JSON_UNESCAPED_UNICODE);
+			echo json_encode(array('code'=>'505','message'=>'接口返回错误','data'=>array('method'=>$e->method,'error_code'=>$e->getCode(),'message'=>$e->getMessage())),JSON_UNESCAPED_UNICODE);
 			exit();
 		}
 		$payStatus = $in_order['status'];
 		if ($payStatus != '3'){
-			echo json_encode(array('code'=>301,'支付失败','in_order'=>$in_order));
+			echo json_encode(array('code'=>'301','message'=>'支付失败','in_order'=>$in_order));
 		}else{
-			echo json_encode(array('code'=>200,'支付成功','in_order'=>$in_order));
+			echo json_encode(array('code'=>'200','message'=>'支付成功','in_order'=>$in_order));
 		}
 		exit();
 		break;
