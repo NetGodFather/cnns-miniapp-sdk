@@ -69,9 +69,9 @@ class CNNSClient{
 	 * 创建付款订单
 	 * 
 	 * @param string $open_id
-	 * @param int $in_order_id
+	 * @param string $in_order_id
 	 * @param string $title
-	 * @param int $coin_id
+	 * @param string $coin_id
 	 * @param float $amount
 	 * @param string $state
 	 * 
@@ -89,9 +89,30 @@ class CNNSClient{
 		return $this->call('open.pay.in_order.create', $parameters, 'POST');
 	}
 	/**
+	 * 创建RMB付款订单
+	 * 
+	 * @param string $open_id
+	 * @param string $in_order_id
+	 * @param string $title
+	 * @param string $coin_id
+	 * @param float $rmb_amount
+	 * @param string $state
+	 */
+	public function createInOrderByRMB($open_id,$in_order_id,$title,$coin_id,$rmb_amount,$state=''){
+		$parameters = array(
+			'open_id'		=>	$open_id,
+			'in_order_id'	=>	$in_order_id,
+			'title'			=>	$title,
+			'coin_id'		=>	$coin_id,
+			'rmb_amount'	=>	$rmb_amount,
+			'state'			=>	$state
+		);
+		return $this->call('open.pay.in_order.create', $parameters, 'POST');
+	}
+	/**
 	 * 获取收款订单信息
 	 *  
-	 * @param number $in_order_id
+	 * @param string $in_order_id
 	 * @param number $in_pay_id
 	 * @return mixed
 	 */

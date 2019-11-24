@@ -29,9 +29,11 @@ if (!$cnns_app['app_id'] || !$cnns_app['clientPrivateKey'] || !$cnns_app['public
 <input type="button" value="获取app信息" id="appbtn" />
 <input type="button" value="切换到横屏" id="setlandscape" />
 <input type="button" value="切换到竖屏" id="setportrait" />
+<input type="button" value="检测是否在APP内" id="checkapp" />
 <hr />
 <input type="button" value="登录" id="login"/>
 <input type="button" value="创建订单" id="create-btn" />
+<input type="button" value="创建RMB订单" id="create-rmb-btn" />
 <input type="button" value="支付" id="pay"/>
 <pre style="padding:10px;background:#FFF;" id="log_out"></pre>
 <script type="text/javascript">
@@ -44,8 +46,10 @@ var loginbtn = document.getElementById("login");
 var paybtn = document.getElementById("pay");
 var appinfobtn = document.getElementById("appbtn");
 var createBtn = document.getElementById("create-btn");
+var createRmbBtn = document.getElementById("create-rmb-btn");
 var setlandscape = document.getElementById("setlandscape");
 var setportrait = document.getElementById("setportrait");
+var checkapp = document.getElementById("checkapp");
 
 function log(data){
 	$('#log_out').text($('#log_out').text()+"\n"+data);
@@ -104,6 +108,15 @@ createBtn.addEventListener('click', function(){
 	}
 	$.post('./ajax.php?a=create_order',{open_id:open_id, auth_token:auth_token},createOrder_callback);
 });
+createRmbBtn.addEventListener('click', function(){
+	if(!open_id || !auth_token){
+		log("请先登录再创建订单");
+		alert("请先登录再创建订单");
+		return false;
+	}
+	$.post('./ajax.php?a=create_rmb_order',{open_id:open_id, auth_token:auth_token},createOrder_callback);
+});
+
 function createOrder_callback(re){
 	re = JSON.parse(re);
 	if(re.code == '200'){
@@ -181,6 +194,16 @@ appinfobtn.addEventListener("click",function(){
     }
 	log(appinfo_str);
  });
+
+checkapp.addEventListener("click",function(){
+	var isIn = cw.isInApp();
+	if( isIn ){
+		log("检测是否在APP内 : True");
+	}else{
+		log("检测是否在APP内 : False");
+	}
+});
+
 </script>
 </body>
 </html>

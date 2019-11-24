@@ -35,7 +35,7 @@ switch ($action) {
 		exit();
 		break;
 	/**
-	 * 创建一个 0.1 ~ 1 CNNS 之间的随机订单，用于测试
+	 * 创建一个 0.1 ~ 2 CNNS 之间的随机订单，用于测试
 	 */
 	case 'create_order':
 		$open_id = trim($_POST['open_id']);
@@ -43,6 +43,22 @@ switch ($action) {
 		$client->setAuthToken($auth_token);
 		try {
 			$re = $client->createInOrder($open_id, 'in_'.rand(100000000,999999999), 'Test in_order('.date('Y-m-d H:i:s').')', 'cnns', rand(1,10)*0.1);
+		} catch (CNNSClientException $e) {
+			echo json_encode(array('code'=>'505','message'=>'接口返回错误','data'=>array('method'=>$e->method,'error_code'=>$e->getCode(),'message'=>$e->getMessage())),JSON_UNESCAPED_UNICODE);
+			exit();
+		}
+		echo json_encode(array('code'=>'200','in_order'=>$re),JSON_UNESCAPED_UNICODE);
+		exit();
+		break;
+		/**
+		 * 创建一个 0.004 ~ 0.08 RMB 之间的随机订单，用于测试
+		 */
+	case 'create_rmb_order':
+		$open_id = trim($_POST['open_id']);
+		$auth_token = trim($_POST['auth_token']);
+		$client->setAuthToken($auth_token);
+		try {
+			$re = $client->createInOrderByRMB($open_id, 'in_'.rand(100000000,999999999), 'Test in_order('.date('Y-m-d H:i:s').')', 'cnns', rand(4,80)*0.001);
 		} catch (CNNSClientException $e) {
 			echo json_encode(array('code'=>'505','message'=>'接口返回错误','data'=>array('method'=>$e->method,'error_code'=>$e->getCode(),'message'=>$e->getMessage())),JSON_UNESCAPED_UNICODE);
 			exit();
